@@ -1,5 +1,13 @@
 import { useFormik } from "formik";
 import React from "react";
+import * as Yup from "yup";
+
+const SignupSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(4, "Min. 4 characters req.")
+    .required("Name is Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+});
 
 const Signup = () => {
   // initialize the formik
@@ -9,12 +17,19 @@ const Signup = () => {
       email: "",
       password: "",
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { setSubmitting }) => {
+
+      setSubmitting(true);
+
+      setTimeout(() => {
+        console.log(values);
+        setSubmitting(false);
+      }, 3000);
+
 
       // send the data to the server
-
     },
+    validationSchema: SignupSchema,
   });
 
   return (
@@ -27,6 +42,11 @@ const Signup = () => {
               <hr />
 
               <label>Name</label>
+
+              <span style={{ fontSize: "0.8em", color: "red", marginLeft: 20 }}>
+                { signupForm.touched.name && signupForm.errors.name}
+              </span>
+
               <input
                 type="text"
                 className="form-control mb-4"
@@ -36,8 +56,10 @@ const Signup = () => {
               />
 
               <label>Email</label>
+              <span style={{ fontSize: "0.8em", color: "red", marginLeft: 20 }}>
+                { signupForm.touched.email && signupForm.errors.email}
+              </span>
               <input
-                type="email"
                 className="form-control mb-4"
                 name="email"
                 onChange={signupForm.handleChange}
@@ -45,6 +67,9 @@ const Signup = () => {
               />
 
               <label>Password</label>
+              <span style={{ fontSize: "0.8em", color: "red", marginLeft: 20 }}>
+                {signupForm.errors.password}
+              </span>
               <input
                 type="password"
                 className="form-control mb-4"
@@ -53,7 +78,16 @@ const Signup = () => {
                 value={signupForm.values.password}
               />
 
-              <button type="submit" className="btn btn-primary mt-5 w-100">Submit</button>
+              <button disabled={signupForm.isSubmitting} type="submit" className="btn btn-primary mt-5 w-100">
+                {
+                  signupForm.isSubmitting ? (
+                    <>
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span>Loading ...</span>
+                    </>
+                  ) : 'Submit'
+                }
+              </button>
             </form>
           </div>
         </div>
