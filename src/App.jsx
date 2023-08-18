@@ -8,6 +8,7 @@ import NotFound from './components/NotFound';
 import EventHandling from './components/EventHandling';
 import StateManagement from './components/StateManagement';
 import Todo from './components/Todo';
+import Browse from './components/Browse';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route element={<EventHandling />} path='/event' />
           <Route element={<StateManagement />} path='/state' />
           <Route element={<Todo />} path='/todo' />
+          <Route element={<Browse />} path='/browse' />
           <Route element={<NotFound />} path='*' />
         </Routes>
       </BrowserRouter>
